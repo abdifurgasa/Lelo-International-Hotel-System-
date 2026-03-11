@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Lelo International Hotel Dashboard</title>
+
+<link rel="stylesheet" href="css/dashboard.css">
+
+<!-- Icons -->
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Chart JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h2><i class="fa-solid fa-hotel"></i> Lelo Hotel</h2>
+
+<ul>
+
+<li class="menuTitle" id="dashboardToggle">
+<i class="fa-solid fa-chart-line"></i> Dashboard
+</li>
+
+<ul class="submenu" id="dashboardMenu">
+
+<li onclick="showPage('rooms')">
+<i class="fa-solid fa-bed"></i> Rooms
+</li>
+
+<li onclick="showPage('restaurant')">
+<i class="fa-solid fa-utensils"></i> Restaurant
+</li>
+
+<li onclick="showPage('drinks')">
+<i class="fa-solid fa-martini-glass"></i> Drinks
+</li>
+
+<li onclick="showPage('billing')">
+<i class="fa-solid fa-file-invoice"></i> Billing
+</li>
+
+<li onclick="showPage('finance')">
+<i class="fa-solid fa-coins"></i> Finance
+</li>
+
+<li onclick="showPage('staff')">
+<i class="fa-solid fa-users"></i> Staff
+</li>
+
+</ul>
+
+<li class="logoutBtn" onclick="logout()">
+<i class="fa-solid fa-right-from-bracket"></i> Logout
+</li>
+
+</ul>
+
+</div>
+
+
+<!-- CONTENT -->
+
+<div class="content">
+
+<!-- BANNER -->
+
+<div class="hotelBanner">
+
+<div class="bannerOverlay">
+
+<h1 class="welcomeTitle">Welcome to Lelo International Hotel</h1>
+
+<p id="todayDate"></p>
+
+</div>
+
+</div>
+
+
+<!-- DASHBOARD STATS -->
+
+<div id="dashboard" class="page">
+
+<div class="cardBox">
+
+<div class="statCard totalRooms">
+<i class="fa-solid fa-bed cardIcon"></i>
+<h3>Total Rooms</h3>
+<p id="totalRooms">0</p>
+</div>
+
+<div class="statCard occupiedRooms">
+<i class="fa-solid fa-door-closed cardIcon"></i>
+<h3>Occupied</h3>
+<p id="occupiedRooms">0</p>
+</div>
+
+<div class="statCard todayOrders">
+<i class="fa-solid fa-utensils cardIcon"></i>
+<h3>Today Orders</h3>
+<p id="todayOrders">0</p>
+</div>
+
+<div class="statCard todayRevenue">
+<i class="fa-solid fa-coins cardIcon"></i>
+<h3>Today Revenue</h3>
+<p id="todayRevenue">0</p>
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ROOMS PAGE -->
+
+<div id="rooms" class="page" style="display:none">
+
+<h2>Rooms</h2>
+
+<div id="roomList" class="cardWrap">
+
+<div class="cardItem">
+
+<img src="images/room1.jpg">
+
+<div class="cardBody">
+
+<h4>Room 101</h4>
+
+<p>Type: Deluxe</p>
+
+<p>Price: $120</p>
+
+<p class="statusAvailable">Available</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- FINANCE PAGE -->
+
+<div id="finance" class="page" style="display:none">
+
+<h2>Hotel Revenue</h2>
+
+<div class="financeChartBox">
+
+<canvas id="revenueChart"></canvas>
+
+</div>
+
+</div>
+
+
+</div>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+</html>
