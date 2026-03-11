@@ -12,7 +12,7 @@ left:0;
 top:0;
 width:240px;
 height:100%;
-background:linear-gradient(180deg,#1b263b,#0d1b2a);
+background:url("images/login-bg.jpg") center/cover no-repeat;;
 color:white;
 padding-top:20px;
 }
