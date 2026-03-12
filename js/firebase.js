@@ -7,13 +7,14 @@ import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase
 
 const firebaseConfig = {
 
-apiKey: "AIzaSyCO4SKZUedlEG5tROqwMgJ_sDE6rKSEsyo",
-authDomain: "lelo-international-hotel-hotel.firebaseapp.com",
-projectId: "lelo-international-hotel-hotel",
-storageBucket: "lelo-international-hotel-hotel.firebasestorage.app",
-messagingSenderId: "964251932564",
-appId: "1:964251932564:web:0ead1b02ebcb4e3f17a181"
-
+apiKey: "AIzaSyDTUzfSRFY76Zb7Ma1kiMnv6feOg86Mukc",
+  authDomain: "lelo-international-hotel.firebaseapp.com",
+  databaseURL: "https://lelo-international-hotel-default-rtdb.firebaseio.com",
+  projectId: "lelo-international-hotel",
+  storageBucket: "lelo-international-hotel.firebasestorage.app",
+  messagingSenderId: "36265181147",
+  appId: "1:36265181147:web:be35257e4332c0bf7971fe",
+  measurementId: "G-PD66QHMBP9"
 };
 
 const app = initializeApp(firebaseConfig);
