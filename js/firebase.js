@@ -1,42 +1,18 @@
-// Firebase SDKs
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+// Import Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
 
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-import { getDatabase } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
-
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-
-
-// Firebase configuration
+// Your Firebase configuration
 const firebaseConfig = {
-
-apiKey: "AIzaSyDTUzfSRFY76Zb7Ma1kiMnv6feOg86Mukc",
-
-authDomain: "lelo-international-hotel.firebaseapp.com",
-
-databaseURL: "https://lelo-international-hotel-default-rtdb.firebaseio.com",
-
-projectId: "lelo-international-hotel",
-
-storageBucket: "lelo-international-hotel.firebasestorage.app",
-
-messagingSenderId: "36265181147",
-
-appId: "1:36265181147:web:be35257e4332c0bf7971fe",
-
-measurementId: "G-PD66QHMBP9"
-
+  apiKey: "AIzaSyBQOT84qzCDIk5YrgrUD-SeXaNV5HwpBVE",
+  authDomain: "lelo-international-hotel-2254a.firebaseapp.com",
+  projectId: "lelo-international-hotel-2254a",
+  storageBucket: "lelo-international-hotel-2254a.firebasestorage.app",
+  messagingSenderId: "889193332993",
+  appId: "1:889193332993:web:6ca3745ebbb05a75939b00",
+  measurementId: "G-C1M5H8T741"
 };
-
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-
-// Firebase services
-export const auth = getAuth(app);
-
-export const db = getDatabase(app);
-
-export const analytics = getAnalytics(app);
+const analytics = getAnalytics(app);
