@@ -1,24 +1,33 @@
-// js/login.js
+// login.js
 import { auth } from "./firebase.js";
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { t } from "./i18n.js"; // optional if you want dynamic error messages
 
-window.login = function() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const errorEl = document.getElementById("error");
+const loginBtn = document.getElementById("loginBtn");
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const errorText = document.getElementById("error");
 
-    if(!email || !password){
-        errorEl.textContent = "Please enter email and password."; // could also use t("enterEmailPassword")
-        return;
-    }
+loginBtn.addEventListener("click", async () => {
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+  errorText.innerText = "";
 
-    signInWithEmailAndPassword(auth, email, password)
-    .then(() => {
-        window.location.href = "dashboard.html"; // redirect after login
-    })
-    .catch((error) => {
-        console.log(error);
-        errorEl.textContent = error.message; // firebase error message
-    });
-}
+  if(!email || !password){
+    errorText.innerText = "Please enter email and password.";
+    return;
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    // Redirect to dashboard
+    window.location.href = "dashboard.html";
+  } catch(err){
+    console.error(err);
+    errorText.innerText = err.message;
+  }
+});
+
+// Optional: allow Enter key to submit
+passwordInput.addEventListener("keypress", (e)=>{
+  if(e.key === "Enter") loginBtn.click();
+});
