@@ -1,19 +1,18 @@
+// js/firebase.js
+
 // Import Firebase core
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
-// Import Analytics
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js";
-
-// Import Auth
+// Import Firebase Auth
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-// Import Firestore
+// Import Firestore (database)
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// Import Storage
+// Import Storage (for photos)
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-// Your Firebase configuration
+// Your Firebase project configuration
 const firebaseConfig = {
   apiKey: "AIzaSyDE2bQuZ7kk7kDBIcfsg-GD-LvFoM0dPWg",
   authDomain: "lelo-intarnational-hotel.firebaseapp.com",
@@ -27,11 +26,10 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Services
-const analytics = getAnalytics(app);
+// Initialize services
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// Export services
-export { app, analytics, auth, db, storage };
+// Export for use in other JS files
+export { app, auth, db, storage };
