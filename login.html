@@ -1,45 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lelo International Hotel - Login</title>
-<link rel="stylesheet" href="css/login.css">
-</head>
+<title>Lelo International Hotel Login</title>
 
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:"Times New Roman", serif;
+  background:url("images/login-bg.jpg") center/cover no-repeat;
+  color:white;
+  text-align:center;
+}
+
+input{
+  padding:10px;
+  margin:5px 0;
+  width:250px;
+  border-radius:5px;
+  border:none;
+}
+
+button{
+  padding:10px 20px;
+  margin-top:10px;
+  background-color:#ffd60a;
+  border:none;
+  border-radius:5px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{
+  background-color:#e6b800;
+}
+
+/* Language selector */
+#langSelect {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 5px;
+  border-radius: 5px;
+}
+</style>
+
+</head>
 <body>
 
-<div class="loginContainer">
-  <div class="loginBox">
+<!-- Language selector -->
+<select id="langSelect">
+  <option value="en">English</option>
+  <option value="am">Amharic</option>
+  <option value="om">Oromo</option>
+</select>
 
-    <h1 data-i18n="login">Login</h1>
-    <h1 background= URL"login-bg-jpg"><h1></h1>
-
-    <!-- Language -->
-    <select id="languageSelect">
-      <option value="en">English</option>
-      <option value="om">Afaan Oromoo</option>
-      <option value="am">Amharic</option>
-    </select>
-
-    <!-- Email -->
-    <input type="email" id="email" placeholder="Email">
-
-    <!-- Password -->
-    <div class="passwordWrapper">
-      <input type="password" id="password" placeholder="Password">
-      <span id="togglePassword">👁️</span>
-    </div>
-
-    <!-- Login Button -->
-    <button id="loginBtn" data-i18n="login">Login</button>
-
-    <p id="errorMsg" class="error"></p>
-
-  </div>
+<div>
+  <h1 data-i18n="login">Login</h1>
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="login()" data-i18n="login">Login</button>
+  <p id="error" style="color:red;"></p>
 </div>
 
-<script type="module" src="js/login.js"></script>
+<script type="module" src="./js/login.js"></script>
+<script type="module" src="./js/i18n.js"></script>
 
 </body>
 </html>
