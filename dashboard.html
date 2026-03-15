@@ -31,8 +31,12 @@ header {
   margin: 10px 0;
 }
 
-.banner-slide {
+.banner-slide-container {
   display: none;
+  position: relative;
+}
+
+.banner-slide {
   width: 100%;
   height: 250px;
   object-fit: cover;
@@ -108,28 +112,36 @@ nav button:hover {
 
   <!-- Banner slideshow -->
   <div class="banner-container">
-    <img src="images/banner1.jpg" class="banner-slide" alt="Banner 1">
-    <div class="banner-text">
-      <div data-i18n="slogan1">Your Comfort, Our Priority</div>
-      <div class="banner-date">2026-03-15</div>
+    <div class="banner-slide-container">
+      <img src="images/banner1.jpg" class="banner-slide" alt="Banner 1">
+      <div class="banner-text">
+        <div data-i18n="slogan1">Your Comfort, Our Priority</div>
+        <div class="banner-date">2026-03-15</div>
+      </div>
     </div>
 
-    <img src="images/banner2.jpg" class="banner-slide" alt="Banner 2">
-    <div class="banner-text">
-      <div data-i18n="slogan2">Experience Excellence</div>
-      <div class="banner-date">2026-03-16</div>
+    <div class="banner-slide-container">
+      <img src="images/banner2.jpg" class="banner-slide" alt="Banner 2">
+      <div class="banner-text">
+        <div data-i18n="slogan2">Experience Excellence</div>
+        <div class="banner-date">2026-03-16</div>
+      </div>
     </div>
 
-    <img src="images/banner3.jpg" class="banner-slide" alt="Banner 3">
-    <div class="banner-text">
-      <div data-i18n="slogan3">Luxury Meets Affordability</div>
-      <div class="banner-date">2026-03-17</div>
+    <div class="banner-slide-container">
+      <img src="images/banner3.jpg" class="banner-slide" alt="Banner 3">
+      <div class="banner-text">
+        <div data-i18n="slogan3">Luxury Meets Affordability</div>
+        <div class="banner-date">2026-03-17</div>
+      </div>
     </div>
 
-    <img src="images/banner4.jpg" class="banner-slide" alt="Banner 4">
-    <div class="banner-text">
-      <div data-i18n="slogan4">Stay, Dine, Enjoy</div>
-      <div class="banner-date">2026-03-18</div>
+    <div class="banner-slide-container">
+      <img src="images/banner4.jpg" class="banner-slide" alt="Banner 4">
+      <div class="banner-text">
+        <div data-i18n="slogan4">Stay, Dine, Enjoy</div>
+        <div class="banner-date">2026-03-18</div>
+      </div>
     </div>
   </div>
 </header>
@@ -165,7 +177,7 @@ import "./js/i18n.js";
 // Banner slideshow
 let slideIndex = 0;
 function showSlides(){
-  const slides = document.querySelectorAll(".banner-slide");
+  const slides = document.querySelectorAll(".banner-slide-container");
   slides.forEach(s => s.style.display="none");
   slideIndex++;
   if(slideIndex > slides.length) slideIndex = 1;
@@ -189,34 +201,38 @@ window.logout = function(){
 // Check login and role
 onAuthStateChanged(auth, async (user) => {
   if(user){
-    // Get role from Firestore: collection "users", doc = user.uid
-    const docRef = doc(db, "users", user.uid);
-    const docSnap = await getDoc(docRef);
+    try {
+      const docRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(docRef);
 
-    if(docSnap.exists()){
-      const role = docSnap.data().role;
-      // Show panels based on role
-      switch(role){
-        case "admin":
-          document.getElementById("dashboardPanel").style.display="block";
-          break;
-        case "manager":
-          document.getElementById("ordersPanel").style.display="block";
-          break;
-        case "kitchen":
-          document.getElementById("restaurantPanel").style.display="block";
-          break;
-        case "barman":
-          document.getElementById("drinksPanel").style.display="block";
-          break;
-        case "finance":
-          document.getElementById("financePanel").style.display="block";
-          break;
-        default:
-          document.getElementById("dashboardPanel").style.display="block";
+      if(docSnap.exists()){
+        const role = docSnap.data().role;
+        // Show panel based on role
+        switch(role){
+          case "admin":
+            showPanel("dashboardPanel");
+            break;
+          case "manager":
+            showPanel("ordersPanel");
+            break;
+          case "kitchen":
+            showPanel("restaurantPanel");
+            break;
+          case "barman":
+            showPanel("drinksPanel");
+            break;
+          case "finance":
+            showPanel("financePanel");
+            break;
+          default:
+            showPanel("dashboardPanel");
+        }
+      } else {
+        alert("User role not found. Contact admin.");
+        logout();
       }
-    } else {
-      alert("User role not found. Contact admin.");
+    } catch(err){
+      console.error(err);
       logout();
     }
   } else {
