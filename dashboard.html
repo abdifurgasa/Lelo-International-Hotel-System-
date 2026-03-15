@@ -1,177 +1,231 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
 
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - Lelo International Hotel</title>
 
-<title>Lelo International Hotel Dashboard</title>
+<style>
+body {
+  margin: 0;
+  font-family: "Times New Roman", serif;
+  background: #f5f5f5;
+  color: #333;
+}
 
-<link rel="stylesheet" href="css/dashboard.css">
+header {
+  position: relative;
+  text-align: center;
+  background: #ffd60a;
+  padding-bottom: 20px;
+}
 
-<!-- Icons -->
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+/* Banner slideshow */
+.banner-container {
+  position: relative;
+  width: 100%;
+  max-height: 250px;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 10px 0;
+}
 
-<!-- Chart JS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+.banner-slide {
+  display: none;
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
 
+.banner-text {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: white;
+  background-color: rgba(0,0,0,0.5);
+  padding: 10px 15px;
+  border-radius: 5px;
+  text-align: left;
+}
+
+.banner-date {
+  font-size: 0.9em;
+  opacity: 0.8;
+}
+
+nav {
+  margin: 10px 0;
+  text-align: center;
+}
+
+nav button {
+  padding: 10px 15px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background: #e6b800;
+  color: #fff;
+}
+
+nav button:hover {
+  background: #d4a800;
+}
+
+.panel {
+  display: none;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+#langSelect {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 5px;
+  border-radius: 5px;
+}
+</style>
 </head>
 
 <body>
 
-<!-- SIDEBAR -->
+<!-- Language selector -->
+<select id="langSelect">
+  <option value="en">English</option>
+  <option value="am">Amharic</option>
+  <option value="om">Oromo</option>
+</select>
 
-<div class="sidebar">
+<header>
+  <h1 data-i18n="welcome">Welcome to Lelo International Hotel System</h1>
 
-<h2><i class="fa-solid fa-hotel"></i> Lelo Hotel</h2>
+  <!-- Banner slideshow -->
+  <div class="banner-container">
+    <img src="images/banner1.jpg" class="banner-slide" alt="Banner 1">
+    <div class="banner-text">
+      <div data-i18n="slogan1">Your Comfort, Our Priority</div>
+      <div class="banner-date">2026-03-15</div>
+    </div>
 
-<ul>
+    <img src="images/banner2.jpg" class="banner-slide" alt="Banner 2">
+    <div class="banner-text">
+      <div data-i18n="slogan2">Experience Excellence</div>
+      <div class="banner-date">2026-03-16</div>
+    </div>
 
-<li class="menuTitle" id="dashboardToggle">
-<i class="fa-solid fa-chart-line"></i> Dashboard
-</li>
+    <img src="images/banner3.jpg" class="banner-slide" alt="Banner 3">
+    <div class="banner-text">
+      <div data-i18n="slogan3">Luxury Meets Affordability</div>
+      <div class="banner-date">2026-03-17</div>
+    </div>
 
-<ul class="submenu" id="dashboardMenu">
+    <img src="images/banner4.jpg" class="banner-slide" alt="Banner 4">
+    <div class="banner-text">
+      <div data-i18n="slogan4">Stay, Dine, Enjoy</div>
+      <div class="banner-date">2026-03-18</div>
+    </div>
+  </div>
+</header>
 
-<li onclick="showPage('rooms')">
-<i class="fa-solid fa-bed"></i> Rooms
-</li>
+<nav>
+  <button data-i18n="dashboard" onclick="showPanel('dashboardPanel')">Dashboard</button>
+  <button data-i18n="rooms" onclick="showPanel('roomsPanel')">Rooms</button>
+  <button data-i18n="orders" onclick="showPanel('ordersPanel')">Orders</button>
+  <button data-i18n="billing" onclick="showPanel('billingPanel')">Billing</button>
+  <button data-i18n="restaurant" onclick="showPanel('restaurantPanel')">Restaurant</button>
+  <button data-i18n="drinks" onclick="showPanel('drinksPanel')">Drinks</button>
+  <button data-i18n="staffManagement" onclick="showPanel('staffPanel')">Staff Management</button>
+  <button data-i18n="finance" onclick="showPanel('financePanel')">Finance</button>
+  <button data-i18n="logout" onclick="logout()">Logout</button>
+</nav>
 
-<li onclick="showPage('restaurant')">
-<i class="fa-solid fa-utensils"></i> Restaurant
-</li>
+<!-- Panels -->
+<div id="dashboardPanel" class="panel">Dashboard Content</div>
+<div id="roomsPanel" class="panel">Rooms Content</div>
+<div id="ordersPanel" class="panel">Orders Content</div>
+<div id="billingPanel" class="panel">Billing Content</div>
+<div id="restaurantPanel" class="panel">Restaurant Content</div>
+<div id="drinksPanel" class="panel">Drinks Content</div>
+<div id="staffPanel" class="panel">Staff Management Content</div>
+<div id="financePanel" class="panel">Finance Content</div>
 
-<li onclick="showPage('drinks')">
-<i class="fa-solid fa-martini-glass"></i> Drinks
-</li>
+<script type="module">
+import { auth, db } from "./js/firebase.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import "./js/i18n.js";
 
-<li onclick="showPage('billing')">
-<i class="fa-solid fa-file-invoice"></i> Billing
-</li>
+// Banner slideshow
+let slideIndex = 0;
+function showSlides(){
+  const slides = document.querySelectorAll(".banner-slide");
+  slides.forEach(s => s.style.display="none");
+  slideIndex++;
+  if(slideIndex > slides.length) slideIndex = 1;
+  slides[slideIndex-1].style.display = "block";
+  setTimeout(showSlides, 5000); // 5 seconds per slide
+}
+showSlides();
 
-<li onclick="showPage('finance')">
-<i class="fa-solid fa-coins"></i> Finance
-</li>
+// Role-based panel display
+function showPanel(panelId){
+  document.querySelectorAll(".panel").forEach(p => p.style.display="none");
+  const panel = document.getElementById(panelId);
+  if(panel) panel.style.display="block";
+}
 
-<li onclick="showPage('staff')">
-<i class="fa-solid fa-users"></i> Staff
-</li>
+// Logout
+window.logout = function(){
+  signOut(auth).then(()=>window.location.href="login.html");
+}
 
-</ul>
+// Check login and role
+onAuthStateChanged(auth, async (user) => {
+  if(user){
+    // Get role from Firestore: collection "users", doc = user.uid
+    const docRef = doc(db, "users", user.uid);
+    const docSnap = await getDoc(docRef);
 
-<li class="logoutBtn" onclick="logout()">
-<i class="fa-solid fa-right-from-bracket"></i> Logout
-</li>
+    if(docSnap.exists()){
+      const role = docSnap.data().role;
+      // Show panels based on role
+      switch(role){
+        case "admin":
+          document.getElementById("dashboardPanel").style.display="block";
+          break;
+        case "manager":
+          document.getElementById("ordersPanel").style.display="block";
+          break;
+        case "kitchen":
+          document.getElementById("restaurantPanel").style.display="block";
+          break;
+        case "barman":
+          document.getElementById("drinksPanel").style.display="block";
+          break;
+        case "finance":
+          document.getElementById("financePanel").style.display="block";
+          break;
+        default:
+          document.getElementById("dashboardPanel").style.display="block";
+      }
+    } else {
+      alert("User role not found. Contact admin.");
+      logout();
+    }
+  } else {
+    window.location.href="login.html";
+  }
+});
 
-</ul>
-
-</div>
-
-
-<!-- CONTENT -->
-
-<div class="content">
-
-<!-- BANNER -->
-
-<div class="hotelBanner">
-
-<div class="bannerOverlay">
-
-<h1 class="welcomeTitle">Welcome to Lelo International Hotel</h1>
-
-<p id="todayDate"></p>
-
-</div>
-
-</div>
-
-
-<!-- DASHBOARD STATS -->
-
-<div id="dashboard" class="page">
-
-<div class="cardBox">
-
-<div class="statCard totalRooms">
-<i class="fa-solid fa-bed cardIcon"></i>
-<h3>Total Rooms</h3>
-<p id="totalRooms">0</p>
-</div>
-
-<div class="statCard occupiedRooms">
-<i class="fa-solid fa-door-closed cardIcon"></i>
-<h3>Occupied</h3>
-<p id="occupiedRooms">0</p>
-</div>
-
-<div class="statCard todayOrders">
-<i class="fa-solid fa-utensils cardIcon"></i>
-<h3>Today Orders</h3>
-<p id="todayOrders">0</p>
-</div>
-
-<div class="statCard todayRevenue">
-<i class="fa-solid fa-coins cardIcon"></i>
-<h3>Today Revenue</h3>
-<p id="todayRevenue">0</p>
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ROOMS PAGE -->
-
-<div id="rooms" class="page" style="display:none">
-
-<h2>Rooms</h2>
-
-<div id="roomList" class="cardWrap">
-
-<div class="cardItem">
-
-<img src="images/room1.jpg">
-
-<div class="cardBody">
-
-<h4>Room 101</h4>
-
-<p>Type: Deluxe</p>
-
-<p>Price: $120</p>
-
-<p class="statusAvailable">Available</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- FINANCE PAGE -->
-
-<div id="finance" class="page" style="display:none">
-
-<h2>Hotel Revenue</h2>
-
-<div class="financeChartBox">
-
-<canvas id="revenueChart"></canvas>
-
-</div>
-
-</div>
-
-
-</div>
-
-<script src="js/dashboard.js"></script>
+window.showPanel = showPanel;
+</script>
 
 </body>
 </html>
