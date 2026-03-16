@@ -1,8 +1,8 @@
-// firebase.js
+// js/firebase.js
 import { initializeApp } from "firebase/app";
-import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
+import { getAnalytics } from "firebase/analytics";
+import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDE2bQuZ7kk7kDBIcfsg-GD-LvFoM0dPWg",
@@ -14,14 +14,10 @@ const firebaseConfig = {
   measurementId: "G-77PG7GMYQ4"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 const auth = getAuth(app);
-
-// Persistent login
 setPersistence(auth, browserLocalPersistence);
-
 const db = getFirestore(app);
-const storage = getStorage(app);
 
-export { app, auth, db, storage };
+export { app, auth, db, analytics };
