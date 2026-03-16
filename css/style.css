@@ -34,11 +34,13 @@ LOGIN PAGE
   border: none;
 }
 
+/* Login button - green */
 .login-container button {
+  background-color: #28a745; /* green */
+  color: white;
   padding: 10px;
   width: 100%;
   margin-top: 10px;
-  background-color: #ffd60a;
   border: none;
   border-radius: 5px;
   font-weight: bold;
@@ -47,7 +49,7 @@ LOGIN PAGE
 }
 
 .login-container button:hover {
-  background-color: #e6b800;
+  background-color: #218838;
 }
 
 #error {
@@ -105,20 +107,29 @@ nav {
   margin: 20px 0;
 }
 
-nav button {
+/* Logout button - red */
+nav button:last-child {
+  background-color: #dc3545;
+  color: white;
+}
+nav button:last-child:hover {
+  background-color: #c82333;
+}
+
+/* Other nav buttons - yellow */
+nav button:not(:last-child) {
+  background-color: #ffd60a;
+  color: #000;
   padding: 10px 15px;
   margin: 0 5px;
   border-radius: 5px;
   border: none;
-  background: #ffd60a;
-  color: #000;
   font-weight: bold;
   cursor: pointer;
   transition: all 0.3s;
 }
-
-nav button:hover {
-  background: #e6b800;
+nav button:not(:last-child):hover {
+  background-color: #e6b800;
 }
 
 /* =========================
@@ -153,12 +164,10 @@ RESPONSIVE
   .login-container, .panel {
     width: 95%;
   }
-
   nav button {
     padding: 8px 10px;
     margin: 3px 2px;
   }
-
   .banner-text {
     font-size: 0.9em;
     bottom: 10px;
