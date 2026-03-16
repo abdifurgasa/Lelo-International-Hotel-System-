@@ -1,106 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Lelo International Hotel</title>
-
-<style>
-body {
-  margin: 0;
-  font-family: "Times New Roman", serif;
-  background: #f5f5f5;
-  color: #333;
-}
-
-header {
-  position: relative;
-  text-align: center;
-  background: #ffd60a;
-  padding-bottom: 20px;
-}
-
-/* Banner slideshow */
-.banner-container {
-  position: relative;
-  width: 100%;
-  max-height: 250px;
-  overflow: hidden;
-  border-radius: 10px;
-  margin: 10px 0;
-}
-
-.banner-slide-container {
-  display: none;
-  position: relative;
-}
-
-.banner-slide {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-}
-
-.banner-text {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  color: white;
-  background-color: rgba(0,0,0,0.5);
-  padding: 10px 15px;
-  border-radius: 5px;
-  text-align: left;
-}
-
-.banner-date {
-  font-size: 0.9em;
-  opacity: 0.8;
-}
-
-nav {
-  margin: 10px 0;
-  text-align: center;
-}
-
-nav button {
-  padding: 10px 15px;
-  margin: 0 5px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  background: #e6b800;
-  color: #fff;
-}
-
-nav button:hover {
-  background: #d4a800;
-}
-
-.panel {
-  display: none;
-  margin: 20px auto;
-  width: 90%;
-  max-width: 800px;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-#langSelect {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  padding: 5px;
-  border-radius: 5px;
-}
-</style>
+<link rel="stylesheet" href="./css/style.css">
 </head>
-
 <body>
 
-<!-- Language selector -->
 <select id="langSelect">
   <option value="en">English</option>
   <option value="am">Amharic</option>
@@ -109,139 +16,34 @@ nav button:hover {
 
 <header>
   <h1 data-i18n="welcome">Welcome to Lelo International Hotel System</h1>
-
-  <!-- Banner slideshow -->
   <div class="banner-container">
     <div class="banner-slide-container">
-      <img src="images/banner1.jpg" class="banner-slide" alt="Banner 1">
-      <div class="banner-text">
-        <div data-i18n="slogan1">Your Comfort, Our Priority</div>
-        <div class="banner-date">2026-03-15</div>
-      </div>
+      <img src="images/banner1.jpg" class="banner-slide">
     </div>
-
     <div class="banner-slide-container">
-      <img src="images/banner2.jpg" class="banner-slide" alt="Banner 2">
-      <div class="banner-text">
-        <div data-i18n="slogan2">Experience Excellence</div>
-        <div class="banner-date">2026-03-16</div>
-      </div>
+      <img src="images/banner2.jpg" class="banner-slide">
     </div>
-
     <div class="banner-slide-container">
-      <img src="images/banner3.jpg" class="banner-slide" alt="Banner 3">
-      <div class="banner-text">
-        <div data-i18n="slogan3">Luxury Meets Affordability</div>
-        <div class="banner-date">2026-03-17</div>
-      </div>
+      <img src="images/banner3.jpg" class="banner-slide">
     </div>
-
     <div class="banner-slide-container">
-      <img src="images/banner4.jpg" class="banner-slide" alt="Banner 4">
-      <div class="banner-text">
-        <div data-i18n="slogan4">Stay, Dine, Enjoy</div>
-        <div class="banner-date">2026-03-18</div>
-      </div>
+      <img src="images/banner4.jpg" class="banner-slide">
     </div>
   </div>
 </header>
 
 <nav>
-  <button data-i18n="dashboard" onclick="showPanel('dashboardPanel')">Dashboard</button>
-  <button data-i18n="rooms" onclick="showPanel('roomsPanel')">Rooms</button>
-  <button data-i18n="orders" onclick="showPanel('ordersPanel')">Orders</button>
-  <button data-i18n="billing" onclick="showPanel('billingPanel')">Billing</button>
-  <button data-i18n="restaurant" onclick="showPanel('restaurantPanel')">Restaurant</button>
-  <button data-i18n="drinks" onclick="showPanel('drinksPanel')">Drinks</button>
-  <button data-i18n="staffManagement" onclick="showPanel('staffPanel')">Staff Management</button>
-  <button data-i18n="finance" onclick="showPanel('financePanel')">Finance</button>
-  <button data-i18n="logout" onclick="logout()">Logout</button>
+  <button onclick="showPanel('dashboardPanel')">Dashboard</button>
+  <button onclick="showPanel('roomsPanel')">Rooms</button>
+  <button onclick="showPanel('restaurantPanel')">Restaurant</button>
+  <button onclick="logout()">Logout</button>
 </nav>
 
-<!-- Panels -->
 <div id="dashboardPanel" class="panel">Dashboard Content</div>
 <div id="roomsPanel" class="panel">Rooms Content</div>
-<div id="ordersPanel" class="panel">Orders Content</div>
-<div id="billingPanel" class="panel">Billing Content</div>
 <div id="restaurantPanel" class="panel">Restaurant Content</div>
-<div id="drinksPanel" class="panel">Drinks Content</div>
-<div id="staffPanel" class="panel">Staff Management Content</div>
-<div id="financePanel" class="panel">Finance Content</div>
 
-<script type="module">
-import { auth, db } from "./js/firebase.js";
-import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import "./js/i18n.js";
-
-// Banner slideshow
-let slideIndex = 0;
-function showSlides(){
-  const slides = document.querySelectorAll(".banner-slide-container");
-  slides.forEach(s => s.style.display="none");
-  slideIndex++;
-  if(slideIndex > slides.length) slideIndex = 1;
-  slides[slideIndex-1].style.display = "block";
-  setTimeout(showSlides, 5000); // 5 seconds per slide
-}
-showSlides();
-
-// Role-based panel display
-function showPanel(panelId){
-  document.querySelectorAll(".panel").forEach(p => p.style.display="none");
-  const panel = document.getElementById(panelId);
-  if(panel) panel.style.display="block";
-}
-
-// Logout
-window.logout = function(){
-  signOut(auth).then(()=>window.location.href="login.html");
-}
-
-// Check login and role
-onAuthStateChanged(auth, async (user) => {
-  if(user){
-    try {
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-
-      if(docSnap.exists()){
-        const role = docSnap.data().role;
-        // Show panel based on role
-        switch(role){
-          case "admin":
-            showPanel("dashboardPanel");
-            break;
-          case "manager":
-            showPanel("ordersPanel");
-            break;
-          case "kitchen":
-            showPanel("restaurantPanel");
-            break;
-          case "barman":
-            showPanel("drinksPanel");
-            break;
-          case "finance":
-            showPanel("financePanel");
-            break;
-          default:
-            showPanel("dashboardPanel");
-        }
-      } else {
-        alert("User role not found. Contact admin.");
-        logout();
-      }
-    } catch(err){
-      console.error(err);
-      logout();
-    }
-  } else {
-    window.location.href="login.html";
-  }
-});
-
-window.showPanel = showPanel;
-</script>
-
+<script type="module" src="./js/dashboard.js"></script>
+<script type="module" src="./js/i18n.js"></script>
 </body>
 </html>
