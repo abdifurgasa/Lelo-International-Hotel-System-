@@ -1,28 +1,58 @@
 import { auth } from "./firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import "./i18n.js";
 
+// Banner slideshow
 let slideIndex = 0;
-function showSlides(){
+function showSlides() {
   const slides = document.querySelectorAll(".banner-slide-container");
-  slides.forEach(s => s.style.display="none");
+  slides.forEach(s => s.style.display = "none");
   slideIndex++;
-  if(slideIndex > slides.length) slideIndex = 1;
-  slides[slideIndex-1].style.display = "block";
+  if (slideIndex > slides.length) slideIndex = 1;
+  slides[slideIndex - 1].style.display = "block";
   setTimeout(showSlides, 5000);
 }
 showSlides();
 
+// Show panel
 window.showPanel = function(panelId){
-  document.querySelectorAll(".panel").forEach(p => p.style.display="none");
+  document.querySelectorAll(".panel").forEach(p=>p.style.display="none");
   const panel = document.getElementById(panelId);
-  if(panel) panel.style.display="block";
+  if(panel) panel.style.display = "block";
 }
 
+// Logout
 window.logout = function(){
-  signOut(auth).then(() => window.location.href="login.html");
+  signOut(auth).then(()=>window.location.href="login.html");
 }
 
-onAuthStateChanged(auth, user => {
+// Toggle submenu
+window.toggleSubmenu = function(id){
+  const submenu = document.getElementById(id);
+  if(submenu.style.display==="flex" || submenu.style.display==="block"){
+    submenu.style.display="none";
+  } else {
+    submenu.style.display="flex";
+    submenu.style.flexDirection="column";
+  }
+}
+
+// Auto logout after 5 minutes inactivity
+let logoutTimer;
+function resetLogoutTimer() {
+  clearTimeout(logoutTimer);
+  logoutTimer = setTimeout(()=>{
+    alert("Session expired. Logging out...");
+    logout();
+  },300000); // 5 minutes
+}
+['mousemove','keydown','click','scroll'].forEach(evt=>{
+  window.addEventListener(evt, resetLogoutTimer);
+});
+resetLogoutTimer();
+
+// Check login
+onAuthStateChanged(auth, user=>{
   if(!user){
     window.location.href="login.html";
   } else {
