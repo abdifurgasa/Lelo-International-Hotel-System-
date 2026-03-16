@@ -100,35 +100,79 @@ header {
 }
 
 /* =========================
-NAVIGATION BUTTONS
+NAVIGATION BUTTONS + SUBMENU
 ========================= */
-nav {
-  text-align: center;
-  margin: 20px 0;
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-/* Logout button - red */
-nav button:last-child {
-  background-color: #dc3545;
-  color: white;
+nav li {
+  position: relative;
+  margin: 0 5px;
 }
-nav button:last-child:hover {
-  background-color: #c82333;
+
+nav li button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.3s;
 }
 
 /* Other nav buttons - yellow */
-nav button:not(:last-child) {
+nav li button:not(.logout) {
   background-color: #ffd60a;
   color: #000;
-  padding: 10px 15px;
-  margin: 0 5px;
-  border-radius: 5px;
-  border: none;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s;
 }
-nav button:not(:last-child):hover {
+
+nav li button:not(.logout):hover {
+  background-color: #e6b800;
+}
+
+/* Logout button - red */
+nav li button.logout {
+  background-color: #dc3545;
+  color: white;
+}
+
+nav li button.logout:hover {
+  background-color: #c82333;
+}
+
+/* Submenu container */
+nav li ul.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 150px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  z-index: 10;
+  flex-direction: column;
+}
+
+nav li ul.submenu li {
+  margin: 0;
+}
+
+nav li ul.submenu li button {
+  width: 100%;
+  text-align: left;
+  padding: 10px;
+  background-color: #ffd60a;
+  color: #000;
+  border-radius: 0;
+}
+
+nav li ul.submenu li button:hover {
   background-color: #e6b800;
 }
 
@@ -164,9 +208,11 @@ RESPONSIVE
   .login-container, .panel {
     width: 95%;
   }
-  nav button {
+  nav li {
+    margin: 3px;
+  }
+  nav li button {
     padding: 8px 10px;
-    margin: 3px 2px;
   }
   .banner-text {
     font-size: 0.9em;
