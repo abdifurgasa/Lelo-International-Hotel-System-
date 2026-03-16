@@ -1,4 +1,3 @@
-// login.js
 import { auth } from "./firebase.js";
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
@@ -19,7 +18,6 @@ loginBtn.addEventListener("click", async () => {
 
   try {
     await signInWithEmailAndPassword(auth, email, password);
-    // Redirect to dashboard
     window.location.href = "dashboard.html";
   } catch(err){
     console.error(err);
@@ -27,7 +25,6 @@ loginBtn.addEventListener("click", async () => {
   }
 });
 
-// Optional: allow Enter key to submit
-passwordInput.addEventListener("keypress", (e)=>{
+passwordInput.addEventListener("keypress", e => {
   if(e.key === "Enter") loginBtn.click();
 });
