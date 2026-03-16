@@ -1,62 +1,31 @@
-// Toggle dashboard menu
+import { auth } from "./firebase.js";
+import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const toggle = document.getElementById("dashboardToggle");
-const menu = document.getElementById("dashboardMenu");
+let slideIndex = 0;
+function showSlides(){
+  const slides = document.querySelectorAll(".banner-slide-container");
+  slides.forEach(s => s.style.display="none");
+  slideIndex++;
+  if(slideIndex > slides.length) slideIndex = 1;
+  slides[slideIndex-1].style.display = "block";
+  setTimeout(showSlides, 5000);
+}
+showSlides();
 
-toggle.onclick = () => {
+window.showPanel = function(panelId){
+  document.querySelectorAll(".panel").forEach(p => p.style.display="none");
+  const panel = document.getElementById(panelId);
+  if(panel) panel.style.display="block";
+}
 
-menu.style.display =
-menu.style.display === "block" ? "none" : "block";
+window.logout = function(){
+  signOut(auth).then(() => window.location.href="login.html");
+}
 
-};
-
-
-// show pages
-
-function showPage(page){
-
-document.querySelectorAll(".page").forEach(p=>{
-p.style.display="none";
+onAuthStateChanged(auth, user => {
+  if(!user){
+    window.location.href="login.html";
+  } else {
+    showPanel("dashboardPanel");
+  }
 });
-
-document.getElementById(page).style.display="block";
-
-}
-
-
-// logout
-
-function logout(){
-
-window.location.href="login.html";
-
-}
-
-
-// date
-
-document.getElementById("todayDate").innerText =
-new Date().toDateString();
-
-
-// finance chart
-
-const ctx = document.getElementById("revenueChart");
-
-if(ctx){
-
-new Chart(ctx,{
-
-type:"bar",
-
-data:{
-labels:["Rooms","Restaurant","Drinks"],
-datasets:[{
-label:"Revenue",
-data:[1200,800,400]
-}]
-}
-
-});
-
-}
