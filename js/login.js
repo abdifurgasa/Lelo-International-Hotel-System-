@@ -25,6 +25,6 @@ loginBtn.addEventListener("click", async () => {
   }
 });
 
-passwordInput.addEventListener("keypress", (e) => {
+passwordInput.addEventListener("keypress", e => {
   if (e.key === "Enter") loginBtn.click();
 });
