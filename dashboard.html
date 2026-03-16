@@ -8,78 +8,75 @@
 </head>
 <body>
 
-<!-- Language selector -->
 <select id="langSelect">
   <option value="en">English</option>
   <option value="am">Amharic</option>
   <option value="om">Oromo</option>
 </select>
 
-<!-- HEADER -->
 <header>
   <h1 data-i18n="welcome">Welcome to Lelo International Hotel System</h1>
-
-  <!-- Banner slideshow -->
   <div class="banner-container">
     <div class="banner-slide-container">
-      <img src="images/banner1.jpg" class="banner-slide" alt="Banner 1">
-      <div class="banner-text">
-        <div data-i18n="slogan1">Your Comfort, Our Priority</div>
-        <div class="banner-date">2026-03-15</div>
-      </div>
+      <img src="images/banner1.jpg" class="banner-slide">
+      <div class="banner-text">Your Comfort, Our Priority</div>
     </div>
     <div class="banner-slide-container">
-      <img src="images/banner2.jpg" class="banner-slide" alt="Banner 2">
-      <div class="banner-text">
-        <div data-i18n="slogan2">Experience Excellence</div>
-        <div class="banner-date">2026-03-16</div>
-      </div>
+      <img src="images/banner2.jpg" class="banner-slide">
+      <div class="banner-text">Experience Excellence</div>
     </div>
     <div class="banner-slide-container">
-      <img src="images/banner3.jpg" class="banner-slide" alt="Banner 3">
-      <div class="banner-text">
-        <div data-i18n="slogan3">Luxury Meets Affordability</div>
-        <div class="banner-date">2026-03-17</div>
-      </div>
+      <img src="images/banner3.jpg" class="banner-slide">
+      <div class="banner-text">Luxury Meets Affordability</div>
     </div>
     <div class="banner-slide-container">
-      <img src="images/banner4.jpg" class="banner-slide" alt="Banner 4">
-      <div class="banner-text">
-        <div data-i18n="slogan4">Stay, Dine, Enjoy</div>
-        <div class="banner-date">2026-03-18</div>
-      </div>
+      <img src="images/banner4.jpg" class="banner-slide">
+      <div class="banner-text">Stay, Dine, Enjoy</div>
     </div>
   </div>
 </header>
 
-<!-- NAVIGATION -->
 <nav>
-  <button onclick="showPanel('dashboardPanel')">Dashboard</button>
-  <button onclick="showPanel('roomsPanel')">Rooms</button>
-  <button onclick="showPanel('restaurantPanel')">Restaurant</button>
-  <button onclick="showPanel('ordersPanel')">Orders</button>
-  <button onclick="showPanel('billingPanel')">Billing</button>
-  <button onclick="showPanel('drinksPanel')">Drinks</button>
-  <button onclick="showPanel('staffPanel')">Staff</button>
-  <button onclick="showPanel('financePanel')">Finance</button>
-  <button onclick="logout()">Logout</button>
+  <ul>
+    <li><button onclick="showPanel('dashboardPanel')">Dashboard</button></li>
+
+    <li>
+      <button onclick="toggleSubmenu('roomsSubmenu')">Rooms ▾</button>
+      <ul class="submenu" id="roomsSubmenu">
+        <li><button onclick="showPanel('roomsPanel')">All Rooms</button></li>
+        <li><button onclick="showPanel('addRoomPanel')">Add Room</button></li>
+      </ul>
+    </li>
+
+    <li>
+      <button onclick="toggleSubmenu('restaurantSubmenu')">Restaurant ▾</button>
+      <ul class="submenu" id="restaurantSubmenu">
+        <li><button onclick="showPanel('restaurantPanel')">Menu</button></li>
+        <li><button onclick="showPanel('ordersPanel')">Orders</button></li>
+      </ul>
+    </li>
+
+    <li><button onclick="showPanel('billingPanel')">Billing</button></li>
+    <li><button onclick="showPanel('drinksPanel')">Drinks</button></li>
+    <li><button onclick="showPanel('staffPanel')">Staff</button></li>
+    <li><button onclick="showPanel('financePanel')">Finance</button></li>
+    <li><button class="logout" onclick="logout()">Logout</button></li>
+  </ul>
 </nav>
 
-<!-- PANELS -->
 <div id="dashboardPanel" class="panel">Dashboard Content</div>
 <div id="roomsPanel" class="panel">Rooms Content</div>
+<div id="addRoomPanel" class="panel">Add Room Content</div>
 <div id="restaurantPanel" class="panel">Restaurant Content</div>
 <div id="ordersPanel" class="panel">Orders Content</div>
 <div id="billingPanel" class="panel">Billing Content</div>
 <div id="drinksPanel" class="panel">Drinks Content</div>
-<div id="staffPanel" class="panel">Staff Management Content</div>
+<div id="staffPanel" class="panel">Staff Content</div>
 <div id="financePanel" class="panel">Finance Content</div>
 
-<!-- SCRIPTS -->
 <script type="module">
-import { auth, db } from "./js/firebase.js";
+import { auth } from "./js/firebase.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import "./js/i18n.js";
 
 // Banner slideshow
@@ -106,44 +103,23 @@ window.logout = function(){
   signOut(auth).then(()=>window.location.href="login.html");
 }
 
-// Check login & role-based panel
-onAuthStateChanged(auth, async (user) => {
-  if(user){
-    try {
-      const docRef = doc(db, "users", user.uid);
-      const docSnap = await getDoc(docRef);
-      if(docSnap.exists()){
-        const role = docSnap.data().role;
-        // Show default panel based on role
-        switch(role){
-          case "admin":
-            showPanel("dashboardPanel");
-            break;
-          case "manager":
-            showPanel("ordersPanel");
-            break;
-          case "kitchen":
-            showPanel("restaurantPanel");
-            break;
-          case "barman":
-            showPanel("drinksPanel");
-            break;
-          case "finance":
-            showPanel("financePanel");
-            break;
-          default:
-            showPanel("dashboardPanel");
-        }
-      } else {
-        alert("User role not found. Contact admin.");
-        logout();
-      }
-    } catch(err){
-      console.error(err);
-      logout();
-    }
+// Toggle submenu
+window.toggleSubmenu = function(id){
+  const submenu = document.getElementById(id);
+  if(submenu.style.display === "flex" || submenu.style.display === "block"){
+    submenu.style.display = "none";
   } else {
-    window.location.href = "login.html";
+    submenu.style.display = "flex";
+    submenu.style.flexDirection = "column";
+  }
+}
+
+// Check login
+onAuthStateChanged(auth, user => {
+  if(!user){
+    window.location.href="login.html";
+  } else {
+    showPanel("dashboardPanel");
   }
 });
 </script>
