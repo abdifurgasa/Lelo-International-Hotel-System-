@@ -1,72 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lelo International Hotel Login</title>
-
-<style>
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:"Times New Roman", serif;
-  background:url("images/login-bg.jpg") center/cover no-repeat;
-  color:white;
-  text-align:center;
-}
-
-.login-container {
-  background: rgba(0,0,0,0.6);
-  padding: 30px 25px;
-  border-radius: 10px;
-  width: 300px;
-}
-
-input{
-  padding:10px;
-  margin:5px 0;
-  width:100%;
-  border-radius:5px;
-  border:none;
-}
-
-button{
-  padding:10px;
-  margin-top:10px;
-  width:100%;
-  background-color:#ffd60a;
-  border:none;
-  border-radius:5px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-button:hover{
-  background-color:#e6b800;
-}
-
-/* Language selector */
-#langSelect {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  padding: 5px;
-  border-radius: 5px;
-}
-#error{
-  margin-top:10px;
-  font-size:0.9em;
-}
-</style>
+<link rel="stylesheet" href="./css/style.css">
 </head>
-
 <body>
 
-<!-- Language selector -->
 <select id="langSelect">
   <option value="en">English</option>
   <option value="am">Amharic</option>
@@ -77,12 +18,11 @@ button:hover{
   <h2 data-i18n="login">Login</h2>
   <input type="email" id="email" placeholder="Email">
   <input type="password" id="password" placeholder="Password">
-  <button id="loginBtn" data-i18n="login">Login</button>
+  <button type="button" id="loginBtn" data-i18n="login">Login</button>
   <p id="error" style="color:red;"></p>
 </div>
 
 <script type="module" src="./js/login.js"></script>
 <script type="module" src="./js/i18n.js"></script>
-
 </body>
 </html>
