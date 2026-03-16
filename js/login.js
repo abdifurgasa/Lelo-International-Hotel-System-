@@ -1,3 +1,4 @@
+// login.js
 import { auth } from "./firebase.js";
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
@@ -11,7 +12,7 @@ loginBtn.addEventListener("click", async () => {
   const password = passwordInput.value.trim();
   errorText.innerText = "";
 
-  if(!email || !password){
+  if (!email || !password) {
     errorText.innerText = "Please enter email and password.";
     return;
   }
@@ -19,12 +20,12 @@ loginBtn.addEventListener("click", async () => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     window.location.href = "dashboard.html";
-  } catch(err){
+  } catch (err) {
     console.error(err);
     errorText.innerText = err.message;
   }
 });
 
-passwordInput.addEventListener("keypress", e => {
-  if(e.key === "Enter") loginBtn.click();
+passwordInput.addEventListener("keypress", (e) => {
+  if (e.key === "Enter") loginBtn.click();
 });
