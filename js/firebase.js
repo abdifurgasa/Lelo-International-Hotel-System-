@@ -1,15 +1,15 @@
-// js/firebase.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+// firebase.js
+import { initializeApp } from "firebase/app";
+import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-// Firebase config
+// Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDE2bQuZ7kk7kDBIcfsg-GD-LvFoM0dPWg",
   authDomain: "lelo-intarnational-hotel.firebaseapp.com",
   projectId: "lelo-intarnational-hotel",
-  storageBucket: "lelo-intarnational-hotel.firebasestorage.app",
+  storageBucket: "lelo-intarnational-hotel.appspot.com",
   messagingSenderId: "509777274669",
   appId: "1:509777274669:web:393d55c77333420d2315a4",
   measurementId: "G-77PG7GMYQ4"
@@ -18,8 +18,11 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// Services
+// Auth with persistent login
 const auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence);
+
+// Firestore & Storage
 const db = getFirestore(app);
 const storage = getStorage(app);
 
