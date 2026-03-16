@@ -4,7 +4,6 @@ import { getAuth, setPersistence, browserLocalPersistence } from "https://www.gs
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 import { getStorage } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-// Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDE2bQuZ7kk7kDBIcfsg-GD-LvFoM0dPWg",
   authDomain: "lelo-intarnational-hotel.firebaseapp.com",
@@ -17,12 +16,11 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
-// Auth with persistent login
 const auth = getAuth(app);
+
+// Persistent login
 setPersistence(auth, browserLocalPersistence);
 
-// Firestore & Storage
 const db = getFirestore(app);
 const storage = getStorage(app);
 
