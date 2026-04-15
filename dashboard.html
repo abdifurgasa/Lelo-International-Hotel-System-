@@ -1,79 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard - Lelo International Hotel</title>
 <link rel="stylesheet" href="./css/style.css">
+
+<style>
+body {
+  font-family: Arial;
+  margin: 0;
+  display: flex;
+}
+
+/* SIDEBAR */
+nav {
+  width: 220px;
+  background: #222;
+  color: white;
+  height: 100vh;
+  padding: 10px;
+}
+
+nav button {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  background: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+nav button:hover {
+  background: #555;
+}
+
+/* SUBMENU */
+.submenu {
+  display: none;
+  padding-left: 10px;
+}
+
+/* CONTENT */
+.panel {
+  display: none;
+  padding: 20px;
+  width: 100%;
+}
+
+header {
+  width: 100%;
+  padding: 10px;
+  background: #f4f4f4;
+}
+</style>
+
 </head>
+
 <body>
 
-<select id="langSelect">
-  <option value="en">English</option>
-  <option value="am">Amharic</option>
-  <option value="om">Oromo</option>
-</select>
-
-<header>
-  <h1>Welcome to Lelo International Hotel System</h1>
-  <div class="banner-container">
-    <div class="banner-slide-container">
-      <img src="images/banner1.jpg" class="banner-slide">
-      <div class="banner-text">Your Comfort, Our Priority</div>
-    </div>
-    <div class="banner-slide-container">
-      <img src="images/banner2.jpg" class="banner-slide">
-      <div class="banner-text">Experience Excellence</div>
-    </div>
-    <div class="banner-slide-container">
-      <img src="images/banner3.jpg" class="banner-slide">
-      <div class="banner-text">Luxury Meets Affordability</div>
-    </div>
-    <div class="banner-slide-container">
-      <img src="images/banner4.jpg" class="banner-slide">
-      <div class="banner-text">Stay, Dine, Enjoy</div>
-    </div>
-  </div>
-</header>
-
+<!-- SIDEBAR -->
 <nav>
-  <ul>
-    <li><button onclick="showPanel('dashboardPanel')">Dashboard</button></li>
 
-    <li>
-      <button onclick="toggleSubmenu('roomsSubmenu')">Rooms ▾</button>
-      <ul class="submenu" id="roomsSubmenu">
-        <li><button onclick="showPanel('roomsPanel')">All Rooms</button></li>
-        <li><button onclick="showPanel('addRoomPanel')">Add Room</button></li>
-      </ul>
-    </li>
+<h3>Lelo Hotel</h3>
 
-    <li>
-      <button onclick="toggleSubmenu('restaurantSubmenu')">Restaurant ▾</button>
-      <ul class="submenu" id="restaurantSubmenu">
-        <li><button onclick="showPanel('restaurantPanel')">Menu</button></li>
-        <li><button onclick="showPanel('ordersPanel')">Orders</button></li>
-      </ul>
-    </li>
+<button onclick="showPanel('dashboardPanel')">Dashboard</button>
 
-    <li><button onclick="showPanel('billingPanel')">Billing</button></li>
-    <li><button onclick="showPanel('drinksPanel')">Drinks</button></li>
-    <li><button onclick="showPanel('staffPanel')">Staff</button></li>
-    <li><button onclick="showPanel('financePanel')">Finance</button></li>
-    <li><button class="logout" onclick="logout()">Logout</button></li>
-  </ul>
+<button onclick="toggleSubmenu('roomsSubmenu')">Rooms ▾</button>
+<div id="roomsSubmenu" class="submenu">
+  <button onclick="showPanel('roomsPanel')">All Rooms</button>
+  <button onclick="showPanel('addRoomPanel')">Add Room</button>
+</div>
+
+<button onclick="toggleSubmenu('restaurantSubmenu')">Restaurant ▾</button>
+<div id="restaurantSubmenu" class="submenu">
+  <button onclick="showPanel('restaurantPanel')">Menu</button>
+  <button onclick="showPanel('ordersPanel')">Orders</button>
+</div>
+
+<button onclick="showPanel('billingPanel')">Billing</button>
+<button onclick="showPanel('drinksPanel')">Drinks</button>
+<button onclick="showPanel('staffPanel')">Staff</button>
+<button onclick="showPanel('financePanel')">Finance</button>
+
+<button onclick="logout()" style="background:red;">Logout</button>
+
 </nav>
 
-<div id="dashboardPanel" class="panel">Dashboard Content</div>
-<div id="roomsPanel" class="panel">Rooms Content</div>
-<div id="addRoomPanel" class="panel">Add Room Content</div>
-<div id="restaurantPanel" class="panel">Restaurant Content</div>
-<div id="ordersPanel" class="panel">Orders Content</div>
-<div id="billingPanel" class="panel">Billing Content</div>
-<div id="drinksPanel" class="panel">Drinks Content</div>
-<div id="staffPanel" class="panel">Staff Content</div>
-<div id="financePanel" class="panel">Finance Content</div>
+<!-- CONTENT -->
+<div class="panel" id="dashboardPanel">Dashboard Content</div>
+<div class="panel" id="roomsPanel">Rooms Content</div>
+<div class="panel" id="addRoomPanel">Add Room Content</div>
+<div class="panel" id="restaurantPanel">Restaurant Content</div>
+<div class="panel" id="ordersPanel">Orders Content</div>
+<div class="panel" id="billingPanel">Billing Content</div>
+<div class="panel" id="drinksPanel">Drinks Content</div>
+<div class="panel" id="staffPanel">Staff Content</div>
+<div class="panel" id="financePanel">Finance Content</div>
 
-<script type="module" src="./js/dashboard.js"></script>
+<!-- FIREBASE + JS -->
+<script type="module">
+import { auth } from "./js/firebase.js";
+import { signOut, onAuthStateChanged } from 
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+/* AUTH PROTECTION */
+onAuthStateChanged(auth, (user) => {
+    if (!user) {
+        window.location.href = "login.html";
+    }
+});
+
+/* LOGOUT */
+window.logout = function () {
+    signOut(auth).then(() => {
+        window.location.href = "login.html";
+    });
+};
+
+/* PANEL SWITCHING */
+window.showPanel = function (id) {
+    document.querySelectorAll(".panel").forEach(p => {
+        p.style.display = "none";
+    });
+
+    document.getElementById(id).style.display = "block";
+};
+
+/* SUBMENU TOGGLE */
+window.toggleSubmenu = function (id) {
+    const menu = document.getElementById(id);
+    menu.style.display = menu.style.display === "block" ? "none" : "block";
+};
+
+/* DEFAULT PAGE */
+window.onload = () => {
+    showPanel("dashboardPanel");
+};
+</script>
+
 </body>
 </html>
